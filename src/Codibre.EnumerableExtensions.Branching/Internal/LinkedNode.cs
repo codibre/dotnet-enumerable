@@ -1,6 +1,8 @@
-namespace Codibre.EnumerableExtensions.Branching.Internal;
+﻿namespace Codibre.EnumerableExtensions.Branching.Internal;
 
-internal record LinkedNode<T>(T Value)
+internal struct LinkedNode<T>(T value) : ILinkedNode<T>
 {
-    public LinkedNode<T>? Next { get; set; }
+    public T Value { get; } = value;
+    public ILinkedNode<T>? Next { get; set; } = null;
+    public bool End { get; set; } = false;
 }

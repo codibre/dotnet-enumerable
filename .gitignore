@@ -3,3 +3,4 @@ obj
 appsettings.json
 coverage
 node_modules
+BenchmarkDotNet.Artifacts

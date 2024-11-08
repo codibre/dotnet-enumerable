@@ -180,3 +180,9 @@ dotnet_analyzer_diagnostic.category-CodeQuality.severity = error
 dotnet_diagnostic.IDE0058.severity = none
 
 dotnet_diagnostic.IDE0005.severity = none
+
+# IDE0039: Use local function
+dotnet_diagnostic.IDE0039.severity = none
+
+# IDE0290: Use primary constructor
+dotnet_diagnostic.IDE0290.severity = none

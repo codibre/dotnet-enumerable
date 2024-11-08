@@ -18,7 +18,12 @@ jobs:
           node-version: "lts/*"
       # Install the .NET SDK indicated in the global.json file
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: | 
+            7.x.x
+            8.x.x
+            9.x.x
 
       - name: Prepare Node
         uses: actions/setup-node@v4
@@ -27,9 +32,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Prepare Db
-        run: npm run prepare-test-db
 
       # - name: Docker build
       #   run: npm run docker:build
@@ -43,6 +45,3 @@ jobs:
         with:
           coverageCommand: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./coverage/lcov.info
           coverageLocations: ${{github.workspace}}/test/Codibre.GrpcSqlProxy.Test/coverage/lcov.info:lcov
-
-      - name: Unload Db
-        run: npm run unload-test-db
