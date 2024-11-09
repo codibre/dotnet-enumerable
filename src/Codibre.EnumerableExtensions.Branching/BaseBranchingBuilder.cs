@@ -16,30 +16,15 @@ public abstract class BaseBranchingBuilder<T>
         return this;
     }
 
-    protected abstract IAsyncEnumerable<T> Source { get; }
-
     public async Task Run()
     {
-        var enumerator = Source.GetAsyncEnumerator();
-        ILinkedNode<T>? node = await enumerator.MoveNextAsync() ? new LinkedNode<T>(enumerator.Current) : null;
-        var iterate = Iterate(node, enumerator);
+        var (node, iterate) = await Iterate().ConfigureAwait(false);
         await Task.WhenAll(
             _branches
                 .Select((x, index) => x(node.GetBranchedIterable()))
                 .Append(iterate)
-        );
+        ).ConfigureAwait(false);
     }
 
-    private static async Task Iterate(ILinkedNode<T>? node, IAsyncEnumerator<T> enumerator)
-    {
-        if (node is null) return;
-        try
-        {
-            while (await enumerator.MoveNextAsync()) node = node.Next = new LinkedNode<T>(enumerator.Current);
-        }
-        finally
-        {
-            node.End = true;
-        }
-    }
+    internal abstract ValueTask<(LinkedNode<T>?, Task)> Iterate();
 }

@@ -13,7 +13,7 @@ public static class AddOpsExtension
 
 public class Benchmarks
 {
-    [Params(100, 1000, 10000)]
+    [Params(100)]
     public int _size = 100;
     private IEnumerable<int> GetBaseEnumerable()
         => Enumerable.Range(0, _size)

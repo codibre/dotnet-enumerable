@@ -74,7 +74,7 @@ public class BranchingBuilderTest(ITestOutputHelper helper)
     public async Task Should_Intercalate_The_Steps_Between_Every_Branch()
     {
         // Arrange
-        var total = 100;
+        var total = 1000000;
         var list = Enumerable.Range(0, total);
         List<int> steps = [];
         var enumerable = Op(list);
@@ -99,7 +99,6 @@ public class BranchingBuilderTest(ITestOutputHelper helper)
             .Run();
 
         // Assert
-        helper.WriteLine(string.Join(",", steps.GetRange(0, 8)));
         var refValue = steps[0];
         steps.TakeWhile((x) => x == refValue).Count().Should().BeLessThan(total);
     }
