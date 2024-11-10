@@ -24,7 +24,6 @@ jobs:
           dotnet-version: | 
             7.x.x
             8.x.x
-            9.x.x
 
       - name: Prepare Node
         uses: actions/setup-node@v4
@@ -37,12 +36,13 @@ jobs:
         run: npm run build
 
       - name: Test
-        uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./coverage/lcov.info
-          coverageLocations: ${{github.workspace}}/test/Codibre.GrpcSqlProxy.Test/coverage/lcov.info:lcov
+        run: npm run test:coverage
+        # uses: paambaati/codeclimate-action@v9.0.0
+        # env:
+        #   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        # with:
+        #   coverageCommand: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./coverage/lcov.info
+        #   coverageLocations: ${{github.workspace}}/test/Codibre.GrpcSqlProxy.Test/coverage/lcov.info:lcov
 
       - name: Semantic Release
         run: npm i -g @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/git @semantic-release/github @semantic-release/exec @droidsolutions-oss/semantic-release-nuget @semantic-release/release-notes-generator semantic-release @semantic-release/error

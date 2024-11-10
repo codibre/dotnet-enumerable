@@ -1,8 +1,6 @@
 ﻿namespace Codibre.EnumerableExtensions.Branching.Internal;
 
-internal record LinkedNode<T>(T value)
+internal sealed record LinkedNode<T>(T Value, BranchContext<T> Context)
 {
-    public T Value { get; } = value;
-    public LinkedNode<T>? Next { get; set; } = null;
-    public bool End { get; set; } = false;
+    public Lazy<ValueTask<LinkedNode<T>?>> Next { get; } = new(Context.FillNext, LazyThreadSafetyMode.ExecutionAndPublication);
 }

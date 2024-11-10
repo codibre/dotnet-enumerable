@@ -9,9 +9,13 @@ namespace Codibre.EnumerableExtensions.Branching.Internal;
 
 internal static class BranchingHelper
 {
-    internal static IAsyncEnumerable<T> GetBranchedIterable<T>(this LinkedNode<T>? node)
-        => node is null ? Array.Empty<T>().ToAsyncEnumerable() : new BranchedEnumerable<T>(node);
-
-    internal static ConfiguredValueTaskAwaitable<bool> MoveLoose<T>(this IAsyncEnumerator<T> enumerator)
-        => enumerator.MoveNextAsync().ConfigureAwait(false);
+    internal static async IAsyncEnumerable<T> GetBranchedIterable<T>(this LinkedNode<T> root)
+    {
+        var node = await root.Next.Value;
+        while (node is not null)
+        {
+            yield return node.Value;
+            node = await node.Next.Value;
+        }
+    }
 }

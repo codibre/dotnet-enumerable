@@ -1,26 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Codibre.EnumerableExtensions.Branching.Internal;
 
 namespace Codibre.EnumerableExtensions.Branching;
-public class AsyncBranchingBuilder<T>(IAsyncEnumerable<T> source) : BaseBranchingBuilder<T>
+public sealed class AsyncBranchingBuilder<T>(IAsyncEnumerable<T> source) : BaseBranchingBuilder<T>
 {
-    internal override async ValueTask<(LinkedNode<T>?, Task)> Iterate()
+    internal override LinkedNode<T> Iterate(int branchCount)
     {
         var enumerator = source.GetAsyncEnumerator();
-        var node = await enumerator.MoveLoose() ? new LinkedNode<T>(enumerator.Current) : null;
-        return (node, node is null ? Task.CompletedTask : Task.Run(async () =>
-        {
-            try
-            {
-                while (await enumerator.MoveLoose()) node = node.Next = new LinkedNode<T>(enumerator.Current);
-            }
-            finally
-            {
-                node.End = true;
-            }
-        }));
+        return new(enumerator.Current, new(
+            async (c) => await enumerator.MoveNextAsync() ? new(enumerator.Current, c) : null,
+            branchCount
+        ));
     }
 }

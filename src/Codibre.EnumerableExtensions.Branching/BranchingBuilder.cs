@@ -6,22 +6,14 @@ using Codibre.EnumerableExtensions.Branching.Internal;
 
 namespace Codibre.EnumerableExtensions.Branching;
 
-public class BranchingBuilder<T>(IEnumerable<T> source) : BaseBranchingBuilder<T>
+public sealed class BranchingBuilder<T>(IEnumerable<T> source) : BaseBranchingBuilder<T>
 {
-    internal override ValueTask<(LinkedNode<T>?, Task)> Iterate()
+    internal override LinkedNode<T> Iterate(int branchCount)
     {
         var enumerator = source.GetEnumerator();
-        var node = enumerator.MoveNext() ? new LinkedNode<T>(enumerator.Current) : null;
-        return ValueTask.FromResult((node, node is null ? Task.CompletedTask : Task.Run(async () =>
-        {
-            try
-            {
-                while (enumerator.MoveNext()) node = node.Next = new LinkedNode<T>(enumerator.Current);
-            }
-            finally
-            {
-                node.End = true;
-            }
-        })));
+        return new LinkedNode<T>(default!, new(
+            (c) => ValueTask.FromResult<LinkedNode<T>?>(enumerator.MoveNext() ? new(enumerator.Current, c) : null),
+            branchCount
+        ));
     }
 }

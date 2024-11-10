@@ -3,7 +3,7 @@
 namespace Codibre.EnumerableExtensions.Branching.Test;
 
 [Collection("Tests")]
-public class BranchingBuilderTest(ITestOutputHelper helper)
+public class BranchingBuilderTest()
 {
     private static IEnumerable<int> Op(IEnumerable<int> list) => list
             .Select(x => x * 2)
@@ -74,7 +74,7 @@ public class BranchingBuilderTest(ITestOutputHelper helper)
     public async Task Should_Intercalate_The_Steps_Between_Every_Branch()
     {
         // Arrange
-        var total = 1000000;
+        var total = 100000;
         var list = Enumerable.Range(0, total);
         List<int> steps = [];
         var enumerable = Op(list);

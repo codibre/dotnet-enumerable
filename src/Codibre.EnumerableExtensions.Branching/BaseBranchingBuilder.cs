@@ -18,13 +18,9 @@ public abstract class BaseBranchingBuilder<T>
 
     public async Task Run()
     {
-        var (node, iterate) = await Iterate().ConfigureAwait(false);
-        await Task.WhenAll(
-            _branches
-                .Select((x, index) => x(node.GetBranchedIterable()))
-                .Append(iterate)
-        ).ConfigureAwait(false);
+        var node = Iterate(_branches.Count);
+        await Task.WhenAll(_branches.Select(x => x(node.GetBranchedIterable())));
     }
 
-    internal abstract ValueTask<(LinkedNode<T>?, Task)> Iterate();
+    internal abstract LinkedNode<T> Iterate(int branchCount);
 }
