@@ -12,7 +12,7 @@
   ],
   "preset": "angular",
   "npmPublish": false,
-  "projectPath": "src/Codibre.GrpcSqlProxy.Client/Codibre.GrpcSqlProxy.Client.csproj",
+  "projectPath": "src/Codibre.EnumerableExtensions.Branching/Codibre.EnumerableExtensions.Branching.csproj",
   "usePackageVersion": true,
   "files": [
     {

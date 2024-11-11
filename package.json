@@ -1,7 +1,7 @@
 {
   "name": "dotnet-enumerable",
   "version": "0.0.0",
-  "description": "Grpc Proxy for Sql Server",
+  "description": "Libraries with enumerable extensions",
   "scripts": {
     "build": "dotnet build",
     "start": "dotnet start",
