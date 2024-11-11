@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/codibre/dotnet-enumerable/compare/v0.1.0...v0.1.1) (2024-11-11)
+
+
+### Bug Fixes
+
+* adding readme ([695dde9](https://github.com/codibre/dotnet-enumerable/commit/695dde9dfab9ad7f659119d5bda5ac6695b0362b))
+
 # [0.1.0](https://github.com/codibre/dotnet-enumerable/compare/v0.0.0...v0.1.0) (2024-11-11)
 
 
