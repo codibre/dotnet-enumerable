@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/codibre/dotnet-enumerable/compare/v0.1.4...v0.2.0) (2024-11-15)
+
+
+### Features
+
+* creating branch options ([ec2ee99](https://github.com/codibre/dotnet-enumerable/commit/ec2ee9932a3e02d097673dc4b5b44c917eb43fee))
+
 ## [0.1.4](https://github.com/codibre/dotnet-enumerable/compare/v0.1.3...v0.1.4) (2024-11-15)
 
 
