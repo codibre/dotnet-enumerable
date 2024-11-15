@@ -24,6 +24,7 @@ jobs:
           dotnet-version: | 
             7.x.x
             8.x.x
+            9.x.x
 
       - name: Prepare Node
         uses: actions/setup-node@v4
@@ -41,7 +42,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./coverage/lcov.info
-          coverageLocations: ${{github.workspace}}/test/Codibre.EnumerableExtensions.Branching.Test/coverage/lcov.net8.0.info:lcov
+          coverageLocations: ${{github.workspace}}/test/Codibre.EnumerableExtensions.Branching.Test/coverage/lcov.net9.0.info:lcov
 
       - name: Semantic Release
         run: npm i -g @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/git @semantic-release/github @semantic-release/exec @droidsolutions-oss/semantic-release-nuget @semantic-release/release-notes-generator semantic-release @semantic-release/error

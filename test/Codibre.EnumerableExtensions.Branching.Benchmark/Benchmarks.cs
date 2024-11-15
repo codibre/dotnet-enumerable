@@ -13,7 +13,7 @@ public static class AddOpsExtension
 
 public class Benchmarks
 {
-    [Params(100)] //, 1000, 10000)]
+    [Params(100, 1000, 10000)]
     public int _size = 100;
     private IEnumerable<int> GetBaseEnumerable()
         => Enumerable.Range(0, _size)
@@ -21,22 +21,22 @@ public class Benchmarks
                 .AddOps(3)
                 .AddOps(4);
 
-    // [Benchmark]
-    // public void Separate()
-    // {
-    //     GetBaseEnumerable().Min();
-    //     GetBaseEnumerable().Max();
-    //     GetBaseEnumerable().Average();
-    // }
+    [Benchmark]
+    public void Separate()
+    {
+        GetBaseEnumerable().Min();
+        GetBaseEnumerable().Max();
+        GetBaseEnumerable().Average();
+    }
 
-    // [Benchmark]
-    // public void ManualBranch()
-    // {
-    //     var baseEnum = GetBaseEnumerable();
-    //     baseEnum.Min();
-    //     baseEnum.Max();
-    //     baseEnum.Average();
-    // }
+    [Benchmark]
+    public void ManualBranch()
+    {
+        var baseEnum = GetBaseEnumerable();
+        baseEnum.Min();
+        baseEnum.Max();
+        baseEnum.Average();
+    }
 
     [Benchmark]
     public Task Branching() => GetBaseEnumerable()

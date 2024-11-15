@@ -6,15 +6,15 @@ namespace Codibre.EnumerableExtensions.Branching.Internal;
 internal sealed record BranchContext<T>(Func<BranchContext<T>, ValueTask<LinkedNode<T>?>> GetNext, int _branchCount)
 {
     private ushort _count = 0;
-    private readonly ushort _limit = (ushort)int.Min(_branchCount << 14, ushort.MaxValue / 2);
+    private readonly ushort _limit = 1024;
 
-    internal async ValueTask<LinkedNode<T>?> FillNext()
+    internal ValueTask<LinkedNode<T>?> FillNext()
+        => ++_count <= _limit ? GetNext(this) : GetYielded();
+
+    private async ValueTask<LinkedNode<T>?> GetYielded()
     {
-        if (++_count > _limit)
-        {
-            _count = 0;
-            await Task.Yield();
-        }
+        _count = 0;
+        await Task.Yield();
         return await GetNext(this);
     }
 }

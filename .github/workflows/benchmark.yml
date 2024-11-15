@@ -1,9 +1,8 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Test
+name: Benchmark
 on:
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 env:
   ConnectionStrings__SqlConnection: ${{ secrets.CONNECTIONSTRINGS__SQLCONNECTION }}
@@ -33,15 +32,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # - name: Docker build
-      #   run: npm run docker:build
-      # - name: Docker run
-      #   run: npm run docker:run
-
       - name: Test
-        uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./coverage/lcov.info
-          coverageLocations: ${{github.workspace}}/test/Codibre.EnumerableExtensions.Branching.Test/coverage/lcov.net9.0.info:lcov
+        run: npm run benchmark
