@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/codibre/dotnet-enumerable/compare/v0.1.3...v0.1.4) (2024-11-15)
+
+
+### Bug Fixes
+
+* tunning no yielding limit ([0985555](https://github.com/codibre/dotnet-enumerable/commit/098555517499fe28bc6198e483d78877e9fcad51))
+
 ## [0.1.3](https://github.com/codibre/dotnet-enumerable/compare/v0.1.2...v0.1.3) (2024-11-15)
 
 
