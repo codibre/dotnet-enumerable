@@ -16,11 +16,11 @@ public abstract class BaseBranchingBuilder<T>
         return this;
     }
 
-    public async Task Run()
+    public async Task Run(BranchRunOptions? options = null)
     {
-        var node = Iterate(_branches.Count);
+        var node = Iterate(options ?? BranchRunOptions.Default);
         await Task.WhenAll(_branches.Select(x => x(node.GetBranchedIterable())));
     }
 
-    internal abstract LinkedNode<T> Iterate(int branchCount);
+    internal abstract LinkedNode<T> Iterate(BranchRunOptions limit);
 }

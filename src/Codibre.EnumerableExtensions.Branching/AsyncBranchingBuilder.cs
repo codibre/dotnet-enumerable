@@ -9,12 +9,12 @@ namespace Codibre.EnumerableExtensions.Branching;
 public sealed class AsyncBranchingBuilder<T>(IAsyncEnumerable<T> source) : BaseBranchingBuilder<T>
 {
     private static readonly LinkedNode<T>? _null = null;
-    internal override LinkedNode<T> Iterate(int branchCount)
+    internal override LinkedNode<T> Iterate(BranchRunOptions options)
     {
         var enumerator = source.GetAsyncEnumerator();
-        return new(enumerator.Current, new(
+        return LinkedNode<T>.Root(
             async (c) => await enumerator.MoveNextAsync() ? new(enumerator.Current, c) : _null,
-            branchCount
-        ));
+            options
+        );
     }
 }

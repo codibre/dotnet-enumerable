@@ -102,4 +102,37 @@ public class BranchingBuilderTest()
         var refValue = steps[0];
         steps.TakeWhile((x) => x == refValue).Count().Should().BeLessThan(total);
     }
+
+    [Fact]
+    public async Task Should_Intercalate_The_Steps_Between_Every_Branch_When_Using_AsyncContextBranch()
+    {
+        // Arrange
+        var total = 100000;
+        var list = Enumerable.Range(0, total);
+        List<int> steps = [];
+        var enumerable = Op(list);
+
+        // Act
+        await enumerable.Branch()
+            .Add(x => x.Select((x) =>
+                {
+                    steps.Add(1);
+                    return x;
+                }).ToArrayAsync(), out var a)
+            .Add(x => x.Select((x) =>
+                {
+                    steps.Add(2);
+                    return x;
+                }).ToArrayAsync(), out var b)
+            .Add(x => x.Select((x) =>
+                {
+                    steps.Add(3);
+                    return x;
+                }).ToArrayAsync(), out var c)
+            .Run(new(1));
+
+        // Assert
+        var refValue = steps[0];
+        steps.TakeWhile((x) => x == refValue).Count().Should().BeLessThan(total);
+    }
 }

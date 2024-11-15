@@ -3,18 +3,23 @@ using System.Xml.XPath;
 
 namespace Codibre.EnumerableExtensions.Branching.Internal;
 
-internal sealed record BranchContext<T>(Func<BranchContext<T>, ValueTask<LinkedNode<T>?>> GetNext, int _branchCount)
+internal sealed record BranchContext<T>(Func<IBranchContext<T>, ValueTask<LinkedNode<T>?>> GetNext, BranchRunOptions options)
+    : IBranchContext<T>
 {
     private ushort _count = 0;
-    private readonly ushort _limit = ushort.MaxValue / 4;
 
-    internal ValueTask<LinkedNode<T>?> FillNext()
-        => ++_count <= _limit ? GetNext(this) : GetYielded();
+    public ValueTask<LinkedNode<T>?> FillNext()
+    {
+        var result = GetNext(this);
+        if (result.IsCompleted) return ++_count <= options.Limit ? result : GetYielded(result.Result);
+        _count = 0;
+        return result;
+    }
 
-    private async ValueTask<LinkedNode<T>?> GetYielded()
+    private async ValueTask<LinkedNode<T>?> GetYielded(LinkedNode<T>? result)
     {
         _count = 0;
         await Task.Yield();
-        return await GetNext(this);
+        return result;
     }
 }

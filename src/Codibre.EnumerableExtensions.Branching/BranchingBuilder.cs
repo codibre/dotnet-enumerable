@@ -8,12 +8,12 @@ namespace Codibre.EnumerableExtensions.Branching;
 
 public sealed class BranchingBuilder<T>(IEnumerable<T> source) : BaseBranchingBuilder<T>
 {
-    internal override LinkedNode<T> Iterate(int branchCount)
+    internal override LinkedNode<T> Iterate(BranchRunOptions options)
     {
         var enumerator = source.GetEnumerator();
-        return new(default!, new(
+        return LinkedNode<T>.Root(
             (c) => new(enumerator.MoveNext() ? new LinkedNode<T>(enumerator.Current, c) : null),
-            branchCount
-        ));
+            options
+        );
     }
 }
