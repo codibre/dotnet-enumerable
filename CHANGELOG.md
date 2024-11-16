@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/codibre/dotnet-enumerable/compare/v0.2.0...v0.3.0) (2024-11-16)
+
+
+### Features
+
+* preloading sync data ([255e529](https://github.com/codibre/dotnet-enumerable/commit/255e529694f006f7f35daf68876140ba2adbde0b))
+
 # [0.2.0](https://github.com/codibre/dotnet-enumerable/compare/v0.1.4...v0.2.0) (2024-11-15)
 
 
