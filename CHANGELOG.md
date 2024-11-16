@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/codibre/dotnet-enumerable/compare/v0.3.0...v0.3.1) (2024-11-16)
+
+
+### Bug Fixes
+
+* refsactoring ([baf07d8](https://github.com/codibre/dotnet-enumerable/commit/baf07d8a3ac7ce4069621509bbbd4ba1066db70f))
+
 # [0.3.0](https://github.com/codibre/dotnet-enumerable/compare/v0.2.0...v0.3.0) (2024-11-16)
 
 
