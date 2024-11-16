@@ -22,7 +22,7 @@ public class BranchingBuilderTest()
             .Add(x => x.ToArrayAsync(), out var a)
             .Add(x => x.ToArrayAsync(), out var b)
             .Add(x => x.ToArrayAsync(), out var c)
-            .Run();
+            .Run(new(2));
 
         // Assert
         a.Result.Should().BeEquivalentTo(enumerable.ToArray());
