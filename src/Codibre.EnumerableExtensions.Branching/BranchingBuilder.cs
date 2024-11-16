@@ -11,9 +11,8 @@ public sealed class BranchingBuilder<T>(IEnumerable<T> source) : BaseBranchingBu
     internal override LinkedNode<T> Iterate(BranchRunOptions options)
     {
         var enumerator = source.GetEnumerator();
-        return LinkedNode<T>.Root(
-            (c) => new(enumerator.MoveNext() ? new LinkedNode<T>(enumerator.Current, c) : null),
-            options
-        );
+        var getNext = (IBranchContext<T> c) => ValueTask.FromResult(LinkedNode<T>.New(enumerator, options, c));
+        BranchContext<T> context = new(getNext, BranchRunOptions.Yielder);
+        return LinkedNode<T>.Root(enumerator, options, context);
     }
 }
