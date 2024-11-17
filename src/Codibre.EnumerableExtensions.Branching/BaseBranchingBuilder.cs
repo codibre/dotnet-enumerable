@@ -22,5 +22,5 @@ public abstract class BaseBranchingBuilder<T>
         await Task.WhenAll(_branches.Select(x => x(node.GetBranchedIterable())));
     }
 
-    internal abstract LinkedNode<T> Iterate(BranchRunOptions limit);
+    internal abstract LinkedNode<T> Iterate(BranchRunOptions options);
 }

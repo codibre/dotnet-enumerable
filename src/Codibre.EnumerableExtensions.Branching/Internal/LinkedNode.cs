@@ -21,7 +21,12 @@ internal sealed record LinkedNode<T>
         var preload = options.Limit;
         LinkedNode<T> root = new(source.Current);
         var node = root;
-        while (preload-- > 0 && source.MoveNext()) node = (node.Next = new(ValueTask.FromResult<LinkedNode<T>?>(new(source.Current)))).Value.Result!;
+        while (preload-- > 0 && source.MoveNext())
+        {
+            LinkedNode<T> current = new(source.Current);
+            node.Next = new(ValueTask.FromResult<LinkedNode<T>?>(current));
+            node = current;
+        }
         node.Next = new(context.FillNext, LazyThreadSafetyMode.ExecutionAndPublication);
         return root;
     }
@@ -32,7 +37,12 @@ internal sealed record LinkedNode<T>
         var preload = options.Limit;
         LinkedNode<T> root = new(source.Current);
         var node = root;
-        while (preload-- > 0 && await source.MoveNextAsync()) node = (node.Next = new(ValueTask.FromResult<LinkedNode<T>?>(new(source.Current)))).Value.Result!;
+        while (preload-- > 0 && await source.MoveNextAsync())
+        {
+            LinkedNode<T> current = new(source.Current);
+            node.Next = new(ValueTask.FromResult<LinkedNode<T>?>(current));
+            node = current;
+        }
         node.Next = new(context.FillNext, LazyThreadSafetyMode.ExecutionAndPublication);
         return root;
     }
@@ -41,30 +51,30 @@ internal sealed record LinkedNode<T>
         => new(default(T)!)
         {
             Next = new(
-                    ValueTask.FromResult(
-                        New(
-                            source,
-                            options,
-                            new AsyncBranchContext<T>(
-                                (c) => ValueTask.FromResult(LinkedNode<T>.New(source, options, c))
-                            )
+                ValueTask.FromResult(
+                    New(
+                        source,
+                        options,
+                        new AsyncBranchContext<T>(
+                            (c) => ValueTask.FromResult(LinkedNode<T>.New(source, options, c))
                         )
                     )
                 )
+            )
         };
 
     public static LinkedNode<T> Root(IAsyncEnumerator<T> source, BranchRunOptions options)
         => new(default(T)!)
         {
             Next = new(
-                    New(
-                        source,
-                        BranchRunOptions.Yielder,
-                        new BranchContext<T>(
-                            (c) => LinkedNode<T>.New(source, BranchRunOptions.Yielder, c),
-                            options
-                        )
+                New(
+                    source,
+                    BranchRunOptions.Yielder,
+                    new BranchContext<T>(
+                        (c) => LinkedNode<T>.New(source, BranchRunOptions.Yielder, c),
+                        options
                     )
                 )
+            )
         };
 }

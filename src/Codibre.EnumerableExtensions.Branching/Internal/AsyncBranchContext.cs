@@ -6,10 +6,5 @@ namespace Codibre.EnumerableExtensions.Branching.Internal;
 internal sealed record AsyncBranchContext<T>(Func<IBranchContext<T>, ValueTask<LinkedNode<T>?>> GetNext)
     : IBranchContext<T>
 {
-
-    public ValueTask<LinkedNode<T>?> FillNext()
-    {
-        var result = GetNext(this);
-        return result.IsCompleted ? new(Task.Run(() => result.Result)) : result;
-    }
+    public ValueTask<LinkedNode<T>?> FillNext() => GetNext(this).ResolveAsync();
 }

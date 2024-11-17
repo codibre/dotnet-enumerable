@@ -11,7 +11,7 @@ internal sealed record BranchContext<T>(Func<IBranchContext<T>, ValueTask<Linked
     public ValueTask<LinkedNode<T>?> FillNext()
     {
         var result = GetNext(this);
-        if (result.IsCompleted) return ++_count <= options.Limit ? result : GetYielded(result.Result);
+        if (result.IsCompletedSuccessfully) return ++_count <= options.Limit ? result : GetYielded(result.Result);
         _count = 0;
         return result;
     }
