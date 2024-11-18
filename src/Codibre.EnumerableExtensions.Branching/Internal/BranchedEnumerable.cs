@@ -12,5 +12,9 @@ internal class BranchedEnumerable<T> : IAsyncEnumerable<T>
     private readonly BranchedEnumerator<T> _enumerator;
     public BranchedEnumerable(LinkedNode<T> root) => _enumerator = new(root);
 
-    public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default) => _enumerator;
+    public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+    {
+        _enumerator.CancellationToken = cancellationToken;
+        return _enumerator;
+    }
 }
